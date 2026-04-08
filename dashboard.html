@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Analytics Dashboard | Zero Waste Kitchen</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* ── Dashboard-specific styles ── */
+    .dashboard-page { background: var(--bg); min-height: 100vh; padding: 0 0 4rem; }
+
+    .dash-hero {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      color: #fff;
+      padding: 2.5rem 2rem 2rem;
+      text-align: center;
+    }
+    .dash-hero h1 { font-size: clamp(1.5rem, 4vw, 2.2rem); margin: 0 0 0.4rem; }
+    .dash-hero p { opacity: 0.85; margin: 0; font-size: 1rem; }
+
+    /* Summary Strip */
+    .summary-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+      padding: 1.5rem 2rem;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+    .summary-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.2rem;
+      text-align: center;
+    }
+    .summary-card--accent { border-color: var(--accent); background: #fff8ee; }
+    .summary-value { display: block; font-size: 2rem; font-weight: 700; color: var(--primary); line-height: 1; }
+    .summary-value--small { font-size: 1.5rem; }
+    .summary-label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-top: 0.3rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .summary-badge { display: inline-block; margin-top: 0.4rem; background: var(--accent); color: #fff; font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 20px; }
+
+    /* Dashboard sections */
+    .dash-section {
+      max-width: 1100px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+    }
+    .dash-section-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 0 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .dash-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    /* Canvas charts */
+    canvas.dash-chart {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 4px;
+    }
+
+    /* Journey chart */
+    #chart-journey { display: flex; flex-direction: column; gap: 0.75rem; }
+    .journey-row { display: flex; flex-direction: column; gap: 0.4rem; }
+    .journey-path { display: flex; flex-wrap: wrap; align-items: center; gap: 0.3rem; }
+    .journey-chip {
+      background: var(--earth3);
+      color: var(--primary);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.6rem;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+    .journey-chip--convert { background: var(--accent); color: #fff; }
+    .journey-arrow { color: var(--text-muted); font-size: 0.9rem; }
+    .journey-bar-wrap { display: flex; align-items: center; gap: 0.5rem; }
+    .journey-bar { height: 8px; background: var(--primary-light); border-radius: 4px; transition: width 0.4s ease; min-width: 4px; }
+    .journey-count { font-size: 0.75rem; color: var(--text-muted); white-space: nowrap; }
+
+    /* A/B Panel */
+    .ab-container { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+    .ab-card {
+      flex: 1;
+      min-width: 180px;
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .ab-card--winner { border-color: var(--accent); background: #fff8ee; }
+    .ab-label { font-size: 1rem; font-weight: 700; color: var(--primary); margin-bottom: 0.3rem; }
+    .ab-desc { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.8rem; }
+    .ab-rate { font-size: 2.5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+    .ab-meta { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem; }
+    .ab-vs { font-size: 1.2rem; font-weight: 700; color: var(--text-muted); flex-shrink: 0; }
+
+    /* Empty state */
+    .empty-state { color: var(--text-muted); font-size: 0.9rem; text-align: center; padding: 2rem; font-style: italic; }
+
+    /* Clear button */
+    .dash-actions { text-align: center; margin-top: 2rem; }
+    #btn-clear-data {
+      background: transparent;
+      border: 2px solid #cc3333;
+      color: #cc3333;
+      padding: 0.6rem 1.5rem;
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    #btn-clear-data:hover { background: #cc3333; color: #fff; }
+
+    /* Grid layout for charts */
+    .dash-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    @media (max-width: 768px) { .dash-grid-2 { grid-template-columns: 1fr; } .ab-container { flex-direction: column; } }
+  </style>
+</head>
+<body class="dashboard-page">
+
+  <!-- Navigation (same as main site) -->
+  <header class="site-header" role="banner">
+    <nav class="site-nav" aria-label="Main navigation">
+      <a href="index.html" class="nav-logo" aria-label="Zero Waste Kitchen home">
+        <img src="images/logo.png" alt="Zero Waste Kitchen" height="40" />
+        <span>Zero Waste Kitchen</span>
+      </a>
+      <button class="menu-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle navigation">☰</button>
+      <ul class="main-nav" id="main-nav" role="list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="dashboard.html" class="active">Dashboard</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <div class="dash-hero">
+      <h1>📊 Analytics Dashboard</h1>
+      <p>Recommendation system performance — all data stored locally in your browser</p>
+    </div>
+
+    <!-- Summary Strip -->
+    <div id="summary-strip" class="summary-strip" role="region" aria-label="Key metrics summary">
+      <!-- Populated by dashboard.js -->
+    </div>
+
+    <!-- Chart 1: Category Conversion Rates -->
+    <section class="dash-section" aria-labelledby="title-categories">
+      <h2 class="dash-section-title" id="title-categories">🎯 Conversion Rate by Recommendation Category</h2>
+      <div class="dash-card">
+        <canvas
+          id="chart-categories"
+          class="dash-chart"
+          width="900"
+          height="320"
+          role="img"
+          aria-label="Bar chart showing conversion rates for each recommendation category"
+        ></canvas>
+      </div>
+    </section>
+
+    <!-- Charts 2 & 4: Products + Attributes side by side -->
+    <section class="dash-section" aria-labelledby="title-products">
+      <div class="dash-grid-2">
+        <div>
+          <h2 class="dash-section-title" id="title-products">🛒 Most-Clicked Products</h2>
+          <div class="dash-card">
+            <canvas
+              id="chart-products"
+              class="dash-chart"
+              width="500"
+              height="340"
+              role="img"
+              aria-label="Horizontal bar chart of most-clicked products"
+            ></canvas>
+          </div>
+        </div>
+        <div>
+          <h2 class="dash-section-title" id="title-attributes">🌿 Attribute Combination Performance</h2>
+          <div class="dash-card">
+            <canvas
+              id="chart-attributes"
+              class="dash-chart"
+              width="500"
+              height="340"
+              role="img"
+              aria-label="Horizontal bar chart of product attribute combinations by click performance"
+            ></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chart 3: User Journey -->
+    <section class="dash-section" aria-labelledby="title-journey">
+      <h2 class="dash-section-title" id="title-journey">🗺️ User Journey Visualization</h2>
+      <div class="dash-card">
+        <div
+          id="chart-journey"
+          role="region"
+          aria-label="User journey paths showing products viewed before affiliate link clicks"
+        >
+          <!-- Populated by dashboard.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Chart 5: A/B Test Panel -->
+    <section class="dash-section" aria-labelledby="title-ab">
+      <h2 class="dash-section-title" id="title-ab">🧪 A/B Test Insights</h2>
+      <div class="dash-card">
+        <div id="ab-panel" class="ab-container" role="region" aria-label="A/B test variant comparison">
+          <!-- Populated by dashboard.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Clear Data -->
+    <div class="dash-actions">
+      <button id="btn-clear-data" aria-label="Clear all analytics data after confirmation">
+        🗑️ Clear All Analytics Data
+      </button>
+      <p style="font-size:0.8rem;color:var(--text-muted);margin-top:0.5rem;">
+        All data is stored locally in your browser. Nothing is sent to any server.
+      </p>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+      <p>© 2026 Zero Waste Kitchen · <a href="index.html">Home</a> · <a href="blog.html">Blog</a></p>
+      <p class="footer-disclosure">As an Amazon Associate I earn from qualifying purchases.</p>
+    </div>
+  </footer>
+
+  <script src="js/product-data.js"></script>
+  <script src="js/tracker.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
