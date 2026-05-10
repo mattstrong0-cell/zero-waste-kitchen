@@ -1,0 +1,19 @@
+{
+  "name": "zwk-affiliate-pipeline",
+  "version": "1.0.0",
+  "description": "Zero Waste Kitchen — content scraper for TikTok, Pinterest, and Instagram affiliate research",
+  "type": "module",
+  "scripts": {
+    "scrape": "node scraper/index.js",
+    "scrape:tiktok": "node scraper/tiktok.js",
+    "scrape:pinterest": "node scraper/pinterest.js",
+    "scrape:instagram": "node scraper/instagram.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@mendable/firecrawl-js": "^1.12.0",
+    "dotenv": "^16.4.5"
+  }
+}
