@@ -7,12 +7,14 @@
     "scrape": "node scraper/index.js",
     "scrape:tiktok": "node scraper/tiktok.js",
     "scrape:pinterest": "node scraper/pinterest.js",
-    "scrape:instagram": "node scraper/instagram.js"
+    "scrape:instagram": "node scraper/instagram.js",
+    "analyze": "node analyzer/analyze.js"
   },
   "engines": {
     "node": ">=18.0.0"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.54.0",
     "@mendable/firecrawl-js": "^1.12.0",
     "dotenv": "^16.4.5"
   }
