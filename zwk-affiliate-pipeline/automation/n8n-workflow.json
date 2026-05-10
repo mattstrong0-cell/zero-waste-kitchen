@@ -1,0 +1,138 @@
+{
+  "name": "ZWK Affiliate Pipeline — Weekly",
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "nodes": [
+    {
+      "id": "0a1b2c3d-0001-0000-0000-000000000001",
+      "name": "Every Monday 9am",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [240, 300],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 9 * * 1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "0a1b2c3d-0002-0000-0000-000000000002",
+      "name": "Run Pipeline",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [480, 300],
+      "parameters": {
+        "command": "cd $PIPELINE_DIR && node run-pipeline.js 2>&1; echo \"EXIT_CODE:$?\""
+      },
+      "notes": "Set PIPELINE_DIR in n8n's environment variables to the absolute path of zwk-affiliate-pipeline/ on your server."
+    },
+    {
+      "id": "0a1b2c3d-0003-0000-0000-000000000003",
+      "name": "Check Success",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [720, 300],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "cond-exit-code",
+              "leftValue": "={{ $json.stdout.match(/EXIT_CODE:(\\d+)/)?.[1] }}",
+              "rightValue": "0",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "0a1b2c3d-0004-0000-0000-000000000004",
+      "name": "Notify Success",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [960, 220],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.WEBHOOK_SUCCESS_URL }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "body": "={{ JSON.stringify({ text: '✅ ZWK pipeline completed at ' + $now.toISO() + '. New production queue ready in data/matched/.' }) }}",
+        "options": {}
+      },
+      "notes": "Set WEBHOOK_SUCCESS_URL in n8n env vars (Slack incoming webhook, Discord webhook, etc.). Delete this node if you don't need notifications."
+    },
+    {
+      "id": "0a1b2c3d-0005-0000-0000-000000000005",
+      "name": "Notify Failure",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [960, 400],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.WEBHOOK_FAILURE_URL }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "body": "={{ JSON.stringify({ text: '❌ ZWK pipeline FAILED at ' + $now.toISO() + '. Output:\\n' + $('Run Pipeline').item.json.stdout }) }}",
+        "options": {}
+      },
+      "notes": "Set WEBHOOK_FAILURE_URL in n8n env vars. Can be a different channel/recipient from success notifications."
+    }
+  ],
+  "connections": {
+    "Every Monday 9am": {
+      "main": [
+        [{ "node": "Run Pipeline", "type": "main", "index": 0 }]
+      ]
+    },
+    "Run Pipeline": {
+      "main": [
+        [{ "node": "Check Success", "type": "main", "index": 0 }]
+      ]
+    },
+    "Check Success": {
+      "main": [
+        [{ "node": "Notify Success", "type": "main", "index": 0 }],
+        [{ "node": "Notify Failure", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "tags": ["zwk", "affiliate", "automation"],
+  "_instructions": {
+    "import": "In n8n: Settings → Workflows → Import from file → select this JSON.",
+    "env_vars_required": {
+      "PIPELINE_DIR": "Absolute path to the zwk-affiliate-pipeline/ directory on your n8n server. Example: /home/ubuntu/zero-waste-kitchen/zwk-affiliate-pipeline",
+      "WEBHOOK_SUCCESS_URL": "(Optional) Slack/Discord incoming webhook URL for success notifications.",
+      "WEBHOOK_FAILURE_URL": "(Optional) Slack/Discord incoming webhook URL for failure notifications."
+    },
+    "prerequisites": "Node.js ≥18 must be installed on the n8n server. Run `npm install` in PIPELINE_DIR once before activating this workflow."
+  }
+}

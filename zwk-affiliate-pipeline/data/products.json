@@ -1,0 +1,184 @@
+[
+  {
+    "id": "reusable-food-storage",
+    "category": "Reusable Food Storage",
+    "examples": [
+      "Stasher Silicone Reusable Storage Bags (4-pack, half-gallon)",
+      "Bee's Wrap Reusable Beeswax Food Wrap Variety Pack (3-pack)",
+      "VEJIBAG Organic Cotton Produce Bags (3-pack)",
+      "Ziploc Evolve Reusable Storage Bags (gallon, 10-count)"
+    ],
+    "priceRange": { "min": 12, "max": 50 },
+    "commissionRate": 0.04,
+    "visualAppealScore": 4,
+    "bestFormats": ["swap challenge", "before/after plastic swap", "product demo", "kitchen organization reel"]
+  },
+  {
+    "id": "beeswax-wraps",
+    "category": "Beeswax Wraps",
+    "examples": [
+      "Bee's Wrap Assorted 3-Pack (S/M/L)",
+      "Etee Compostable Beeswax Wrap (4-pack)",
+      "Abeego Beeswax Food Wrap Variety Pack",
+      "Khala & Company Hemp Beeswax Wraps (3-pack)"
+    ],
+    "priceRange": { "min": 12, "max": 32 },
+    "commissionRate": 0.04,
+    "visualAppealScore": 5,
+    "bestFormats": ["ASMR wrapping", "swap challenge", "step-by-step tutorial", "aesthetic kitchen"]
+  },
+  {
+    "id": "compost-bins",
+    "category": "Compost Bins",
+    "examples": [
+      "OXO Good Grips Easy-Clean Compost Bin (0.75 gal)",
+      "Bamboozle Food Composter for Kitchen Counter (3L)",
+      "Full Circle Scrap Happy Freezer Compost Collector",
+      "Epica Stainless Steel Compost Bin (1.3 Gallon)"
+    ],
+    "priceRange": { "min": 22, "max": 75 },
+    "commissionRate": 0.04,
+    "visualAppealScore": 3,
+    "bestFormats": ["zero waste kitchen tour", "eco lifestyle routine", "before/after kitchen", "product review"]
+  },
+  {
+    "id": "bamboo-utensils",
+    "category": "Bamboo Utensils",
+    "examples": [
+      "Bambu Home Bamboo Cooking Utensil Set (6-piece)",
+      "OXO Softworks Bamboo Spoon Set (3-piece)",
+      "Totally Bamboo Tiki 3-Piece Bamboo Cooking Set",
+      "Natural Home Bamboo 7-Piece Knife Block Set"
+    ],
+    "priceRange": { "min": 15, "max": 65 },
+    "commissionRate": 0.04,
+    "visualAppealScore": 4,
+    "bestFormats": ["kitchen organization", "aesthetic flat lay", "cooking reel", "plastic swap challenge"]
+  },
+  {
+    "id": "stainless-steel-containers",
+    "category": "Stainless Steel Containers",
+    "examples": [
+      "LunchBots Stainless Steel Bento Box (5-compartment)",
+      "U-Konserve Stainless Steel Round Container Set (3-piece)",
+      "Life Without Plastic Wide-Mouth Stainless Jar (16oz)",
+      "ECOlunchbox Blue Water Bento (3-in-1)"
+    ],
+    "priceRange": { "min": 18, "max": 60 },
+    "commissionRate": 0.04,
+    "visualAppealScore": 4,
+    "bestFormats": ["plastic swap", "meal prep reel", "lunch box reveal", "product demo"]
+  },
+  {
+    "id": "glass-storage",
+    "category": "Glass Storage",
+    "examples": [
+      "Weck Tulip Jar Assorted Set (10-piece)",
+      "Pyrex Simply Store 18-Piece Glass Food Storage Set",
+      "OXO Good Grips Smart Seal Glass Container Set (5-piece)",
+      "Le Parfait Super Jar Glass Storage (set of 3)"
+    ],
+    "priceRange": { "min": 28, "max": 85 },
+    "commissionRate": 0.035,
+    "visualAppealScore": 5,
+    "bestFormats": ["pantry organization", "aesthetic ASMR", "before/after plastic swap", "kitchen transformation"]
+  },
+  {
+    "id": "silicone-bags",
+    "category": "Silicone Bags",
+    "examples": [
+      "Stasher Half-Gallon Reusable Silicone Bag (Stand-Up)",
+      "Bumkins Reusable Silicone Food Bag Set (3-pack)",
+      "Russbe Reusable Snack & Sandwich Bags (8-pack)",
+      "Zip Top Reusable 100% Platinum Silicone Bag Set"
+    ],
+    "priceRange": { "min": 10, "max": 42 },
+    "commissionRate": 0.04,
+    "visualAppealScore": 4,
+    "bestFormats": ["swap challenge", "meal prep", "freezer prep", "kids lunch pack"]
+  },
+  {
+    "id": "reusable-produce-bags",
+    "category": "Reusable Produce Bags",
+    "examples": [
+      "Earthwise Reusable Mesh Produce Bags (9-pack, mixed sizes)",
+      "Simple Ecology Organic Cotton Muslin Bags (6-pack)",
+      "ECOBAGS Organic Cotton Net Bag Set (5-pack)",
+      "OTOR Reusable Mesh Grocery Bags (15-pack)"
+    ],
+    "priceRange": { "min": 9, "max": 28 },
+    "commissionRate": 0.04,
+    "visualAppealScore": 3,
+    "bestFormats": ["grocery haul", "zero waste shopping trip", "swap challenge", "quick eco-tip reel"]
+  },
+  {
+    "id": "kitchen-cleaning-eco",
+    "category": "Kitchen Cleaning (eco)",
+    "examples": [
+      "Full Circle Tidy Hemp & Cotton Dishcloth Set (4-pack)",
+      "Skoy Eco-Friendly Scrub & Wipe Set (4-pack)",
+      "Grove Co. Dish Soap Concentrate Starter Set",
+      "Method Squirt + Mop Wood Floor Cleaning Solution"
+    ],
+    "priceRange": { "min": 8, "max": 36 },
+    "commissionRate": 0.04,
+    "visualAppealScore": 3,
+    "bestFormats": ["cleaning routine", "swap challenge", "eco cleaning tips", "satisfying cleaning ASMR"]
+  },
+  {
+    "id": "water-filtration",
+    "category": "Water Filtration",
+    "examples": [
+      "ZeroWater 10-Cup Pitcher with TDS Meter",
+      "LifeStraw Home 7-Cup Water Filter Pitcher",
+      "Clearly Filtered 3-Stage Water Pitcher (100oz)",
+      "Berkey Travel Berkey Water Filter System (1.5 gal)"
+    ],
+    "priceRange": { "min": 28, "max": 130 },
+    "commissionRate": 0.04,
+    "visualAppealScore": 3,
+    "bestFormats": ["tap water TDS test", "health & hydration tip", "zero waste routine", "product review"]
+  },
+  {
+    "id": "coffee-tea-zero-waste",
+    "category": "Coffee & Tea (zero waste)",
+    "examples": [
+      "CoffeeSock Reusable Organic Cotton Coffee Filter (size 4)",
+      "Able Brewing Kone Reusable Stainless Pour-Over Filter",
+      "FORLIFE Curve Teapot with Stainless Infuser (28oz)",
+      "Finum Permanent Reusable Tea Brewing Basket (M)"
+    ],
+    "priceRange": { "min": 10, "max": 55 },
+    "commissionRate": 0.04,
+    "visualAppealScore": 5,
+    "bestFormats": ["morning routine", "aesthetic café at home", "ASMR brew", "zero waste coffee/tea swap"]
+  },
+  {
+    "id": "lunch-boxes",
+    "category": "Lunch Boxes",
+    "examples": [
+      "PlanetBox Rover Complete Stainless Steel Lunchbox System",
+      "ECOlunchbox Three-in-One Stainless Steel Bento Set",
+      "Bentgo Kids Stainless Steel Lunch Box (leak-proof)",
+      "PackIt Freezable Classic Lunch Bag"
+    ],
+    "priceRange": { "min": 25, "max": 95 },
+    "commissionRate": 0.04,
+    "visualAppealScore": 4,
+    "bestFormats": ["lunch pack & prep reel", "kids bento content", "back-to-school", "what I eat in a day"]
+  },
+  {
+    "id": "food-prep-tools",
+    "category": "Food Prep Tools",
+    "examples": [
+      "OXO Good Grips 3-Piece Silicone Spatula Set",
+      "Bamboozle Bamboo Cutting Board with Juice Groove (large)",
+      "Full Circle Rasp Grater with Built-in Lemon Squeezer",
+      "Joseph Joseph Nest 9-Piece Mixing Bowl Set"
+    ],
+    "priceRange": { "min": 14, "max": 72 },
+    "commissionRate": 0.04,
+    "visualAppealScore": 4,
+    "bestFormats": ["cooking reel", "kitchen gadget reveal", "recipe content", "eco kitchen tour"]
+  }
+]

@@ -8,7 +8,8 @@
     "scrape:tiktok": "node scraper/tiktok.js",
     "scrape:pinterest": "node scraper/pinterest.js",
     "scrape:instagram": "node scraper/instagram.js",
-    "analyze": "node analyzer/analyze.js"
+    "analyze": "node analyzer/analyze.js",
+    "match": "node matcher/match.js"
   },
   "engines": {
     "node": ">=18.0.0"

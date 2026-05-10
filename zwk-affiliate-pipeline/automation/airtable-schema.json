@@ -1,0 +1,138 @@
+{
+  "_instructions": {
+    "usage": "This file describes the recommended Airtable base structure for the ZWK affiliate pipeline. Create the base manually or use the Airtable API to bootstrap it.",
+    "base_name": "ZWK Affiliate Pipeline"
+  },
+  "tables": [
+    {
+      "name": "Scraped Content",
+      "description": "Raw content items scraped from TikTok, Pinterest, and Instagram by Part 1.",
+      "fields": [
+        { "name": "URL",          "type": "url",           "required": true,  "notes": "Unique post URL — used as dedup key." },
+        { "name": "Platform",     "type": "singleSelect",  "required": true,  "options": ["tiktok", "pinterest", "instagram"] },
+        { "name": "Caption",      "type": "multilineText", "required": false },
+        { "name": "Title",        "type": "singleLineText","required": false,  "notes": "Pinterest pins only." },
+        { "name": "Hashtags",     "type": "multilineText", "required": false,  "notes": "Space-separated list." },
+        { "name": "View Count",   "type": "number",        "required": false,  "notes": "TikTok only." },
+        { "name": "Like Count",   "type": "number",        "required": false },
+        { "name": "Comment Count","type": "number",        "required": false },
+        { "name": "Repin Count",  "type": "number",        "required": false,  "notes": "Pinterest only." },
+        { "name": "Format",       "type": "singleSelect",  "required": false,  "options": ["Reel", "carousel", "single", "video", "static", "idea pin"] },
+        { "name": "Date Posted",  "type": "date",          "required": false },
+        { "name": "Scraped At",   "type": "dateTime",      "required": true },
+        { "name": "Source",       "type": "singleLineText","required": false,  "notes": "Hashtag or search query that surfaced this item." }
+      ],
+      "sampleData": [
+        {
+          "URL": "https://www.tiktok.com/@user/video/123456",
+          "Platform": "tiktok",
+          "Caption": "Switch to these zero waste swaps! 🌿",
+          "Hashtags": "zerowaste ecokitchen sustainableliving",
+          "View Count": 1200000,
+          "Like Count": 45000,
+          "Format": "Reel",
+          "Date Posted": "2026-05-01",
+          "Scraped At": "2026-05-10T12:00:00.000Z",
+          "Source": "#zerowaste"
+        },
+        {
+          "URL": "https://www.pinterest.com/pin/789012/",
+          "Platform": "pinterest",
+          "Title": "10 Zero Waste Kitchen Swaps",
+          "Caption": "Easy swaps to reduce plastic in your kitchen",
+          "Repin Count": 3200,
+          "Format": "static",
+          "Date Posted": "2026-04-15",
+          "Scraped At": "2026-05-10T12:00:00.000Z",
+          "Source": "zero waste kitchen"
+        }
+      ]
+    },
+    {
+      "name": "Analysis",
+      "description": "Viral patterns extracted from scraped content by Part 2 (Claude analysis).",
+      "fields": [
+        { "name": "Pattern Name",      "type": "singleLineText", "required": true,  "notes": "E.g. 'ASMR wrapping', 'swap challenge', 'before/after plastic swap'" },
+        { "name": "Pattern Type",      "type": "singleSelect",   "required": true,  "options": ["viralFormat", "hookPattern", "ctaPattern", "engagementTheme", "crossPlatformInsight"] },
+        { "name": "Description",       "type": "multilineText",  "required": false },
+        { "name": "Platforms",         "type": "multipleSelects","required": false,  "options": ["tiktok", "pinterest", "instagram"] },
+        { "name": "Confidence",        "type": "singleSelect",   "required": false,  "options": ["high", "medium", "low"] },
+        { "name": "Example",           "type": "multilineText",  "required": false,  "notes": "Example hook line or CTA text." },
+        { "name": "Related Keywords",  "type": "multilineText",  "required": false,  "notes": "Comma-separated keywords associated with this pattern." },
+        { "name": "Avg Engagement",    "type": "singleSelect",   "required": false,  "options": ["high", "medium", "low"] },
+        { "name": "Analysis Date",     "type": "date",           "required": true,   "notes": "Date of the analysis run that produced this pattern." },
+        { "name": "Source File",       "type": "singleLineText", "required": false,  "notes": "Filename of the analysis JSON (e.g. analysis_2026-05-10.json)." }
+      ],
+      "sampleData": [
+        {
+          "Pattern Name": "ASMR wrapping",
+          "Pattern Type": "viralFormat",
+          "Description": "Close-up shots of wrapping food in beeswax wrap with satisfying sounds",
+          "Platforms": ["tiktok", "instagram"],
+          "Confidence": "high",
+          "Related Keywords": "beeswax, wrap, ASMR, satisfying, plastic-free",
+          "Avg Engagement": "high",
+          "Analysis Date": "2026-05-10"
+        },
+        {
+          "Pattern Name": "Stop buying X, switch to Y",
+          "Pattern Type": "hookPattern",
+          "Description": "Opening hook that calls out a plastic item and offers the eco swap",
+          "Platforms": ["tiktok", "instagram"],
+          "Confidence": "high",
+          "Example": "Stop buying plastic wrap — here's what I use instead 🌿",
+          "Avg Engagement": "high",
+          "Analysis Date": "2026-05-10"
+        }
+      ]
+    },
+    {
+      "name": "Production Queue",
+      "description": "Ranked product × format × platform content combos output by Part 3 (matcher). Each row = one piece of affiliate content to produce.",
+      "fields": [
+        { "name": "Product Category", "type": "singleLineText", "required": true },
+        { "name": "Product Example",  "type": "singleLineText", "required": true,  "notes": "Specific product name to feature and link." },
+        { "name": "Format",           "type": "singleLineText", "required": true,  "notes": "Viral content format (from Analysis table)." },
+        { "name": "Platform",         "type": "singleSelect",   "required": true,  "options": ["tiktok", "pinterest", "instagram"] },
+        { "name": "Total Score",      "type": "number",         "required": true,  "notes": "1–10 composite score. Sort by this descending." },
+        { "name": "Commission Score", "type": "number",         "required": false, "notes": "1–10 sub-score." },
+        { "name": "Format Match",     "type": "number",         "required": false, "notes": "1–10 sub-score." },
+        { "name": "Platform Fit",     "type": "number",         "required": false, "notes": "1–10 sub-score." },
+        { "name": "Suggested Hook",   "type": "multilineText",  "required": false },
+        { "name": "Suggested CTA",    "type": "singleLineText", "required": false },
+        { "name": "Status",           "type": "singleSelect",   "required": true,  "options": ["queued", "in-progress", "done", "published"], "default": "queued" },
+        { "name": "Video URL",        "type": "url",            "required": false, "notes": "Link to the published video once live." },
+        { "name": "Matched At",       "type": "dateTime",       "required": false, "notes": "Timestamp of the matcher run." },
+        { "name": "Notes",            "type": "multilineText",  "required": false }
+      ],
+      "sampleData": [
+        {
+          "Product Category": "Beeswax Wraps",
+          "Product Example": "Bee's Wrap Assorted 3-Pack (S/M/L)",
+          "Format": "ASMR wrapping",
+          "Platform": "tiktok",
+          "Total Score": 9.0,
+          "Commission Score": 7,
+          "Format Match": 10,
+          "Platform Fit": 10,
+          "Suggested Hook": "The most satisfying plastic-free kitchen swap 🌿 [close-up ASMR wrap shot]",
+          "Suggested CTA": "Link in bio — grab the set I use!",
+          "Status": "queued"
+        },
+        {
+          "Product Category": "Glass Storage",
+          "Product Example": "Weck Tulip Jar Assorted Set (10-piece)",
+          "Format": "pantry organization",
+          "Platform": "pinterest",
+          "Total Score": 8.7,
+          "Commission Score": 8,
+          "Format Match": 10,
+          "Platform Fit": 8,
+          "Suggested Hook": "Before & after: replacing every plastic container with glass [side-by-side flat lay]",
+          "Suggested CTA": "Save this for your next kitchen refresh →",
+          "Status": "queued"
+        }
+      ]
+    }
+  ]
+}
